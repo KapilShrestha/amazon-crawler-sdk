@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "es2018",
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "bundler", 
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
@@ -9,8 +11,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "paths": {
+      "@constants/*": ["src/constants/*"],
+      "@utils/*": ["src/lib/utils/*"]
+    }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

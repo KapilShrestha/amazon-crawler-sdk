@@ -1,5 +1,10 @@
-module.exports = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
-  };
+export default {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  transform: {
+      '^.+\\.tsx?$': 'ts-jest'
+  },
+  moduleNameMapper: {
+      '^@constants/(.*)$': '<rootDir>/src/constants/$1'
+  }
+};

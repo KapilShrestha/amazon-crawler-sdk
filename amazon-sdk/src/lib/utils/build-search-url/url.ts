@@ -1,11 +1,5 @@
-import { AMAZON_CONSTANTS } from '../constants';
-
-interface SearchOptions {
-    page?: number;
-    sort?: 'price-asc' | 'price-desc' | 'relevance' | 'newest';
-    minPrice?: number;
-    maxPrice?: number;
-}
+import { AMAZON_CONSTANTS } from '@constants/index';
+import { SearchOptions } from './types';
 
 export function buildSearchUrl(keyword: string, options: SearchOptions = {}): string {
     const params = new URLSearchParams();

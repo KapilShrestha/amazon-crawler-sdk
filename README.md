@@ -60,6 +60,14 @@ cd amazon-sdk
 npm run build
 ```
 
+### 5. Run Tests
+
+To run tests for **both SDK and crawler**, use:
+
+```bash
+npm test
+
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
