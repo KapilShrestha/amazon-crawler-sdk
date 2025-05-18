@@ -10,6 +10,7 @@ cd amazon-crawler-sdk
 make build
 
 # run sdk-platform
+cd sdk-platform
 npm start
 
 # for detailed --
