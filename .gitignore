@@ -37,3 +37,10 @@ temp/
 
 # Debug files
 .debug/
+
+# Logs
+logs/
+
+# MongoDB
+mongo/logs/
+.env

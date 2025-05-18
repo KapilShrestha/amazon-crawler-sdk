@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # amazon-crawler:
+  #   build:
+  #     context: .
+  #     dockerfile: amazon-crawler/Dockerfile
+  #   environment:
+  #     - NODE_ENV=production
+  #   networks:
+  #     - crawler-network
+
+  # sdk-platform:
+  #   build:
+  #     context: ./sdk-platform
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=production
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   networks:
+  #     - crawler-network
+
+  # amazon-sdk:
+  #   build:
+  #     context: ./amazon-sdk
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./amazon-sdk:/app
+  #     - /app/node_modules
+  #   environment:
+  #     - NODE_ENV=development
+  #     - FLUENTD_HOST=fluentd
+  #     - FLUENTD_PORT=24224
+  #   networks:
+  #     - logging-network
+  #   depends_on:
+  #     - fluentd
+
+  fluentd:
+    build:
+      context: ./fluentd
+      dockerfile: Dockerfile
+    volumes:
+      - ./fluentd/fluent.conf:/fluentd/etc/fluent.conf
+      - ./logs/fluentd:/fluentd/log
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+      - "24220:24220"   
+    environment:
+      - FLUENTD_CONF=fluent.conf
+    networks:
+      - logging-network
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:24220/api/plugins.json"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  crawler-network:
+    driver: bridge
+  logging-network:
+    driver: bridge
+
+volumes:
+  fluentd-logs:
+    driver: local

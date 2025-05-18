@@ -1,0 +1,33 @@
+services:
+  sdk:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - amazon-sdk-net
+
+  fluentd:
+    build:
+      context: ./docker/fluentd
+      dockerfile: Dockerfile
+    volumes:
+      - ./docker/fluentd/fluent.conf:/fluentd/etc/fluent.conf
+      - ./logs:/fluentd/log
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      - amazon-sdk-net
+
+networks:
+  amazon-sdk-net:
+    driver: bridge
+
+volumes:
+  logs:
+    driver: local
