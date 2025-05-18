@@ -7,6 +7,13 @@
 git clone https://github.com/KapilShrestha/amazon-crawler-sdk.git
 cd amazon-crawler-sdk
 
+make build
+
+# run sdk-platform
+npm start
+
+# for detailed --
+
 # Install and build the SDK
 cd amazon-sdk
 npm install
