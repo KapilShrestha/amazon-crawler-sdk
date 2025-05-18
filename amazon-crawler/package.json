@@ -12,9 +12,7 @@
         "category": "ts-node category-crawler/category-crawler.ts",
         "test": "jest"
     },
-    "dependencies": {
-        "amazon-sdk": "file:../amazon-sdk"
-    },
+
     "devDependencies": {
         "@types/jest": "^29.5.12",
         "@types/node": "^20.17.47",

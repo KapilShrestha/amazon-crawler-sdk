@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Platform to control Amazon crawler",
   "main": "dist/index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc",
