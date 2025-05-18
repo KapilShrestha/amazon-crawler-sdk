@@ -1,36 +1,48 @@
 import { buildSearchUrl } from '@utils/build-search-url';
+import { RequestService } from '@utils/request';
 import { KeywordSearchOptions, KeywordSearchResult } from './types';
+import {AmazonDefaultSelectors} from '@constants'
+import { parse } from 'node-html-parser';
 
 export class KeywordService {
-    /**
-     * Builds a search URL for the given keyword and options
-     */
-    buildSearchUrl(keyword: string, options: KeywordSearchOptions = {}): KeywordSearchResult {
-        this.validateSearchParams(keyword, options);
-        
-        const url = buildSearchUrl(keyword, options);
+    private requestService: RequestService;
 
-        return {
-            url,
-            keyword,
-            options
-        };
+    constructor() {
+        this.requestService = new RequestService();
     }
 
-    /**
-     * Validates the search parameters
-     */
-    private validateSearchParams(keyword: string, options: KeywordSearchOptions): void {
+    async search(keyword: string, options: KeywordSearchOptions = {}): Promise<KeywordSearchResult[]> {
+        try {
+            this.validateInput(keyword);
+
+            const url = buildSearchUrl(keyword, options);
+
+            const response = await this.requestService.get(url);
+
+            if (response.status !== 200) {
+                throw new Error(`Search failed with status: ${response.status}`);
+            }
+
+            return this.parseSearchResults(response.data);
+        } catch (error) {
+            console.error('Error during keyword search:', error);
+            throw error;
+        }
+    }
+
+    private validateInput(keyword: string): void {
         if (!keyword || keyword.trim().length === 0) {
             throw new Error('Keyword is required');
         }
+    }
 
-        if (options.page && options.page < 1) {
-            throw new Error('Page number must be greater than 0');
-        }
+    private parseSearchResults(html: string): KeywordSearchResult[] {
+        const root = parse(html);
+        const products = root.querySelectorAll(AmazonDefaultSelectors.product.container);
 
-        if (options.minPrice && options.maxPrice && options.minPrice > options.maxPrice) {
-            throw new Error('Minimum price cannot be greater than maximum price');
-        }
+        return Array.from(products).map(product => ({
+            title: product.querySelector(AmazonDefaultSelectors.product.title)?.textContent?.trim() || '',
+            price: product.querySelector(AmazonDefaultSelectors.product.price)?.textContent?.trim() || null,
+        }));
     }
 }

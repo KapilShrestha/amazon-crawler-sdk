@@ -1,4 +1,4 @@
-import { AMAZON_CONSTANTS } from '@constants/index';
+import { AMAZON_CONSTANTS } from '@constants';
 import { SearchOptions } from './types';
 
 export function buildSearchUrl(keyword: string, options: SearchOptions = {}): string {

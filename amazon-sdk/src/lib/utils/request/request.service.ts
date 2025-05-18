@@ -1,6 +1,5 @@
-import  got, { Options }  from 'got';
 import { RequestOptions, RequestResponse, RequestError } from './types';
-import { REQUEST_CONSTANTS } from '@constants/index';
+import { REQUEST_CONSTANTS } from '@constants';
 
 export class RequestService {
     async get(url: string, options: RequestOptions = {}): Promise<RequestResponse> {
@@ -22,7 +21,7 @@ export class RequestService {
             };
 
             const res = await fetch(url, gotOptions);
-            const response =  await res.json();
+            const response =  await res.text();
 
             return {
                 status: res.status,

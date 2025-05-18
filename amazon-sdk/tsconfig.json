@@ -13,8 +13,8 @@
     "declaration": true,
     "types": ["jest", "node"],
     "paths": {
-      "@constants/*": ["src/constants/*"],
-      "@utils/*": ["src/lib/utils/*"]
+      "@constants": ["src/constants"],
+      "@utils/*": ["src/lib/utils/*"],
     }
   },
   "include": ["src"],
